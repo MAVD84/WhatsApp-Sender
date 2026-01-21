@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ubican ID - Envío Rápido</title>
+    <title>Ubican ID - Envío Seguro</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'DM Sans', sans-serif;
@@ -22,87 +23,117 @@
             background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
             transition: all 0.3s ease;
         }
-        input, textarea {
+        textarea {
             background: rgba(255, 255, 255, 0.05) !important;
             border: 1px solid rgba(255, 255, 255, 0.1) !important;
             color: white !important;
+            scrollbar-width: thin;
+            scrollbar-color: #25D366 transparent;
         }
     </style>
 </head>
 <body class="p-4 md:p-12">
-    <div class="max-w-4xl mx-auto">
+    <div class="max-w-5xl mx-auto">
         <div class="text-center mb-10">
-            <h1 class="text-4xl font-bold mb-2 text-white">Ubican <span class="text-green-400">ID</span> Directo</h1>
-            <p class="text-gray-400">Envío optimizado: Solo presiona <b>Enter</b> en cada pestaña.</p>
+            <h1 class="text-5xl font-bold mb-2">Ubican <span class="text-green-400">ID</span></h1>
+            <p class="text-gray-400">Sistema de Envío Masivo - Sin Errores de Símbolos</p>
         </div>
 
-        <div class="grid md:grid-cols-2 gap-6">
-            <div class="glass-card p-6">
-                <h2 class="text-xl font-bold mb-4">Números (+52...)</h2>
-                <textarea id="contactList" class="w-full h-48 p-3 rounded-xl mb-4" placeholder="Pega aquí los números, uno por línea"></textarea>
-                <p class="text-xs text-gray-500">Asegúrate de incluir el código de país sin el signo +.</p>
+        <div class="grid md:grid-cols-2 gap-8">
+            <div class="glass-card p-8">
+                <h2 class="text-xl font-bold mb-4 flex items-center gap-2">
+                    <span>📱</span> Lista de Números
+                </h2>
+                <textarea id="contactList" class="w-full h-64 p-4 rounded-xl mb-4 text-sm" placeholder="Pega los números aquí (uno por línea)...&#10;Ejemplo:&#10;526561234567&#10;526567654321"></textarea>
+                <button onclick="loadDemo()" class="text-xs text-blue-400 hover:underline">Cargar números de prueba</button>
             </div>
 
-            <div class="glass-card p-6">
-                <h2 class="text-xl font-bold mb-4">Mensaje</h2>
-                <textarea id="messageArea" class="w-full h-48 p-3 rounded-xl mb-4" placeholder="Escribe tu mensaje..."></textarea>
+            <div class="glass-card p-8">
+                <h2 class="text-xl font-bold mb-4 flex items-center gap-2">
+                    <span>💬</span> Mensaje
+                </h2>
+                <textarea id="messageArea" class="w-full h-64 p-4 rounded-xl mb-4 text-sm" placeholder="Escribe el mensaje aquí..."></textarea>
+                <button onclick="applyTemplate()" class="w-full py-2 bg-purple-500/20 text-purple-300 rounded-lg text-sm font-bold hover:bg-purple-500/30 transition-all">
+                    ✨ Cargar Mensaje Ubican ID (Con Emojis)
+                </button>
             </div>
         </div>
 
-        <div class="mt-8 text-center">
-            <button onclick="startBulkSend()" id="btnMain" class="btn-send px-12 py-4 rounded-2xl text-xl font-bold text-white shadow-xl">
-                🚀 Abrir Chats de WhatsApp
+        <div class="mt-10 glass-card p-8 text-center">
+            <button onclick="startBulkSend()" id="btnMain" class="btn-send px-16 py-5 rounded-2xl text-2xl font-bold text-white shadow-2xl hover:scale-105 active:scale-95 transition-all">
+                🚀 Iniciar Envío Masivo
             </button>
-            <div id="status" class="mt-4 text-sm text-green-400"></div>
-        </div>
-
-        <div class="mt-12 text-sm text-gray-500 bg-black/20 p-6 rounded-xl border border-white/5">
-            <h3 class="font-bold text-gray-300 mb-2">💡 ¿Cómo usarlo para que sea rápido?</h3>
-            <ol class="list-decimal ml-4 space-y-1">
-                <li>Ten **WhatsApp Web** ya iniciado en tu navegador.</li>
-                <li>Haz clic en el botón verde. Tu navegador abrirá pestañas nuevas.</li>
-                <li>Si el navegador te pregunta, activa **"Permitir ventanas emergentes"**.</li>
-                <li>Solo tendrás que ir pestaña por pestaña presionando la tecla **Enter**.</li>
-            </ol>
+            <div id="status" class="mt-6 text-green-400 font-medium h-6"></div>
+            
+            <div id="progressCont" class="hidden mt-4 w-full bg-white/5 rounded-full h-2">
+                <div id="progressBar" class="bg-green-500 h-2 rounded-full transition-all duration-500" style="width: 0%"></div>
+            </div>
         </div>
     </div>
 
     <script>
-        function startBulkSend() {
+        // Mensaje codificado en Unicode para evitar errores de símbolos
+        const ubicanTemplate = "\uD83D\uDC3E \u00BFSe perdi\u00F3 tu mascota? Sabemos lo angustiante que puede ser \uD83D\uDC94\n\nEn Ubican ID creamos anuncios con geolocalizaci\u00F3n, que se muestran justo en el \u00E1rea donde se extravi\u00F3 tu mascota, para que miles de personas cercanas la vean y aumenten las posibilidades de encontrarla r\u00E1pido. \u2764\uFE0F\n\nM\u00E1s informaci\u00F3n \uD83D\uDC49 https://sos.ubicanid.com";
+
+        window.onload = () => {
+            const savedMsg = localStorage.getItem('ubican_msg_v2');
+            if (savedMsg) document.getElementById('messageArea').value = savedMsg;
+            else applyTemplate();
+        };
+
+        function applyTemplate() {
+            document.getElementById('messageArea').value = ubicanTemplate;
+            localStorage.setItem('ubican_msg_v2', ubicanTemplate);
+        }
+
+        function loadDemo() {
+            document.getElementById('contactList').value = "526561638112\n526561951348";
+        }
+
+        async function startBulkSend() {
             const rawContacts = document.getElementById('contactList').value.split('\n');
             const message = document.getElementById('messageArea').value;
             const btn = document.getElementById('btnMain');
+            const status = document.getElementById('status');
+            const progressCont = document.getElementById('progressCont');
+            const progressBar = document.getElementById('progressBar');
             
-            if (!message || rawContacts.length === 0) {
-                alert("Llena los números y el mensaje.");
+            const contacts = rawContacts.map(c => c.replace(/\D/g, '')).filter(c => c.length > 5);
+            
+            if (contacts.length === 0 || !message) {
+                alert("Por favor, ingresa números de teléfono y un mensaje.");
                 return;
             }
 
-            const contacts = rawContacts.map(c => c.replace(/\D/g, '')).filter(c => c.length > 0);
-            
             btn.disabled = true;
-            btn.innerText = "Abriendo pestañas...";
+            btn.style.opacity = "0.5";
+            progressCont.classList.remove('hidden');
 
-            let i = 0;
-            const interval = setInterval(() => {
-                if (i >= contacts.length) {
-                    clearInterval(interval);
-                    btn.disabled = false;
-                    btn.innerText = "🚀 Iniciar Envío Masivo";
-                    document.getElementById('status').innerText = "¡Listo! Presiona Enter en cada pestaña.";
-                    return;
-                }
-
+            for (let i = 0; i < contacts.length; i++) {
                 const phone = contacts[i];
-                // USAMOS EL LINK DIRECTO DE ENVÍO PARA WHATSAPP WEB
-                const url = `https://web.whatsapp.com/send?phone=${phone}&text=${encodeURIComponent(message)}`;
+                status.innerText = `Abriendo chat ${i + 1} de ${contacts.length}...`;
                 
+                // Actualizar progreso
+                const percent = ((i + 1) / contacts.length) * 100;
+                progressBar.style.width = percent + '%';
+
+                // URL Directa a WhatsApp Web
+                const url = `https://web.whatsapp.com/send?phone=${phone}&text=${encodeURIComponent(message)}`;
                 window.open(url, '_blank');
                 
-                i++;
-                document.getElementById('status').innerText = `Abriendo chat ${i} de ${contacts.length}...`;
-            }, 3000); // 3 segundos entre pestañas para no colapsar el navegador
+                // Espera de 4 segundos para evitar que el navegador se bloquee
+                await new Promise(r => setTimeout(r, 4000));
+            }
+
+            status.innerText = "✅ ¡Pestañas abiertas! Presiona ENTER en cada una para enviar.";
+            btn.disabled = false;
+            btn.style.opacity = "1";
         }
+
+        // Guardar mensaje automáticamente
+        document.getElementById('messageArea').addEventListener('input', (e) => {
+            localStorage.setItem('ubican_msg_v2', e.target.value);
+        });
     </script>
 </body>
 </html>
