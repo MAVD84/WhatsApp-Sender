@@ -3,324 +3,106 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ubican ID - Envío Masivo WhatsApp</title>
+    <title>Ubican ID - Envío Rápido</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'DM Sans', sans-serif;
             background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 50%, #0f1629 100%);
             min-height: 100vh;
-            position: relative;
-            overflow-x: hidden;
+            color: #e0e7ff;
         }
-        body::before {
-            content: '';
-            position: fixed;
-            width: 200%; height: 200%;
-            top: -50%; left: -50%;
-            background-image: 
-                radial-gradient(circle at 20% 50%, rgba(25, 206, 88, 0.08) 0%, transparent 50%),
-                radial-gradient(circle at 80% 80%, rgba(59, 130, 246, 0.08) 0%, transparent 50%),
-                radial-gradient(circle at 40% 20%, rgba(168, 85, 247, 0.06) 0%, transparent 50%);
-            animation: float 20s ease-in-out infinite;
-            z-index: 0;
-        }
-        @keyframes float {
-            0%, 100% { transform: translate(0, 0) rotate(0deg); }
-            33% { transform: translate(30px, -30px) rotate(120deg); }
-            66% { transform: translate(-20px, 20px) rotate(240deg); }
-        }
-        .container { position: relative; z-index: 1; }
-        h1, h2 { font-family: 'Crimson Pro', serif; }
         .glass-card {
             background: rgba(255, 255, 255, 0.03);
             backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 24px;
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
         }
-        .contact-item {
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            animation: slideIn 0.5s ease-out backwards;
-        }
-        .contact-item:hover {
-            transform: translateX(8px);
-            background: rgba(25, 206, 88, 0.1);
-        }
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .btn-primary {
+        .btn-send {
             background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
             transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
         }
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 12px 24px rgba(37, 211, 102, 0.4);
-        }
-        .toast {
-            position: fixed;
-            bottom: 2rem; right: 2rem;
-            padding: 1rem 1.5rem;
-            background: rgba(25, 206, 88, 0.95);
-            color: white;
-            border-radius: 12px;
-            transform: translateY(150%);
-            transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            z-index: 1000;
-            backdrop-filter: blur(10px);
-        }
-        .toast.show { transform: translateY(0); }
-        textarea, input {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: #e0e7ff;
-            transition: all 0.3s ease;
-        }
-        textarea:focus, input:focus {
-            background: rgba(255, 255, 255, 0.08);
-            border-color: #25D366;
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(37, 211, 102, 0.1);
-        }
-        .progress-bar {
-            height: 6px;
-            background: rgba(37, 211, 102, 0.1);
-            border-radius: 3px;
-            overflow: hidden;
-            margin-top: 1rem;
-        }
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #25D366, #128C7E);
-            width: 0%;
-            transition: width 0.4s ease;
+        input, textarea {
+            background: rgba(255, 255, 255, 0.05) !important;
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+            color: white !important;
         }
     </style>
 </head>
-<body>
-    <div class="container max-w-7xl mx-auto px-4 py-12">
-        <div class="text-center mb-12">
-            <div class="inline-block mb-4">
-                <div class="flex items-center gap-3 px-6 py-3 rounded-full glass-card">
-                    <div class="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
-                    <span class="text-gray-300 text-sm font-medium">Sistema de Auxilio Ubican</span>
-                </div>
-            </div>
-            <h1 class="text-6xl md:text-7xl font-bold text-white mb-4 tracking-tight">
-                Ubican <span class="text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-emerald-500">ID</span>
-            </h1>
-            <p class="text-xl text-gray-400 max-w-2xl mx-auto">Gestión de campañas para recuperación de mascotas</p>
+<body class="p-4 md:p-12">
+    <div class="max-w-4xl mx-auto">
+        <div class="text-center mb-10">
+            <h1 class="text-4xl font-bold mb-2 text-white">Ubican <span class="text-green-400">ID</span> Directo</h1>
+            <p class="text-gray-400">Envío optimizado: Solo presiona <b>Enter</b> en cada pestaña.</p>
         </div>
 
-        <div class="grid md:grid-cols-2 gap-8">
-            <div class="glass-card p-8">
-                <div class="flex items-center justify-between mb-6">
-                    <h2 class="text-2xl font-bold text-white">Directorio</h2>
-                    <span class="bg-green-500/10 text-green-400 px-3 py-1 rounded-full text-sm border border-green-500/20">
-                        <span id="contactCount">0</span> Registrados
-                    </span>
-                </div>
-                
-                <div class="mb-4">
-                    <input type="text" id="newContact" placeholder="+52 656 123 4567" class="w-full px-4 py-4 rounded-xl mb-3" />
-                    <button onclick="addContact()" class="w-full btn-primary text-white font-semibold py-3 px-6 rounded-xl">
-                        + Agregar a la lista
-                    </button>
-                </div>
-
-                <div id="contactsList" class="space-y-2 max-h-80 overflow-y-auto pr-2 mb-4">
-                    </div>
-
-                <div class="grid grid-cols-2 gap-3 pt-4 border-t border-white/5">
-                    <button onclick="loadDefaultContacts()" class="bg-blue-500/10 hover:bg-blue-500/20 text-blue-300 py-2 rounded-lg text-sm transition-all">Ejemplo</button>
-                    <button onclick="clearAllContacts()" class="bg-red-500/10 hover:bg-red-500/20 text-red-300 py-2 rounded-lg text-sm transition-all">Borrar todo</button>
-                </div>
+        <div class="grid md:grid-cols-2 gap-6">
+            <div class="glass-card p-6">
+                <h2 class="text-xl font-bold mb-4">Números (+52...)</h2>
+                <textarea id="contactList" class="w-full h-48 p-3 rounded-xl mb-4" placeholder="Pega aquí los números, uno por línea"></textarea>
+                <p class="text-xs text-gray-500">Asegúrate de incluir el código de país sin el signo +.</p>
             </div>
 
-            <div class="glass-card p-8">
-                <h2 class="text-2xl font-bold text-white mb-6">Mensaje de Búsqueda</h2>
-                <textarea id="messageText" rows="12" placeholder="Escribe el mensaje aquí..." class="w-full px-4 py-3 rounded-xl resize-none mb-4"></textarea>
-                <div class="flex gap-3">
-                    <button onclick="loadDefaultMessage()" class="flex-1 bg-purple-500/10 hover:bg-purple-500/20 text-purple-300 py-2 rounded-lg text-sm">Cargar Plantilla</button>
-                    <button onclick="clearMessage()" class="px-4 bg-white/5 hover:bg-white/10 text-gray-400 py-2 rounded-lg text-sm">Limpiar</button>
-                </div>
+            <div class="glass-card p-6">
+                <h2 class="text-xl font-bold mb-4">Mensaje</h2>
+                <textarea id="messageArea" class="w-full h-48 p-3 rounded-xl mb-4" placeholder="Escribe tu mensaje..."></textarea>
             </div>
         </div>
 
-        <div class="mt-8 glass-card p-8">
-            <div class="flex flex-col md:flex-row gap-6 items-center justify-between">
-                <div class="text-center md:text-left">
-                    <h3 class="text-xl font-bold text-white">Lanzar Campaña</h3>
-                    <p class="text-gray-400">Se abrirán pestañas individuales para cada contacto.</p>
-                </div>
-                <button onclick="startSending()" class="btn-primary text-white font-bold py-4 px-12 rounded-2xl text-xl shadow-lg shadow-green-500/20">
-                    🚀 Iniciar Envío Masivo
-                </button>
-            </div>
-            
-            <div id="progressContainer" class="hidden mt-8">
-                <div class="progress-bar">
-                    <div id="progressFill" class="progress-fill"></div>
-                </div>
-                <p id="progressText" class="text-gray-400 text-sm mt-3 text-center font-medium"></p>
-            </div>
+        <div class="mt-8 text-center">
+            <button onclick="startBulkSend()" id="btnMain" class="btn-send px-12 py-4 rounded-2xl text-xl font-bold text-white shadow-xl">
+                🚀 Abrir Chats de WhatsApp
+            </button>
+            <div id="status" class="mt-4 text-sm text-green-400"></div>
+        </div>
+
+        <div class="mt-12 text-sm text-gray-500 bg-black/20 p-6 rounded-xl border border-white/5">
+            <h3 class="font-bold text-gray-300 mb-2">💡 ¿Cómo usarlo para que sea rápido?</h3>
+            <ol class="list-decimal ml-4 space-y-1">
+                <li>Ten **WhatsApp Web** ya iniciado en tu navegador.</li>
+                <li>Haz clic en el botón verde. Tu navegador abrirá pestañas nuevas.</li>
+                <li>Si el navegador te pregunta, activa **"Permitir ventanas emergentes"**.</li>
+                <li>Solo tendrás que ir pestaña por pestaña presionando la tecla **Enter**.</li>
+            </ol>
         </div>
     </div>
 
-    <div id="toast" class="toast"></div>
-
     <script>
-        let contacts = JSON.parse(localStorage.getItem('ubican_contacts')) || [];
-        let currentIndex = 0;
-
-        const defaultMessage = `👋 Hola, lamento mucho la situación por la que están pasando; entiendo la angustia de extraviar a tu mascota.
-
-Soy Miguel Ángel Vega, fundador de Ubican ID, y quiero ayudarte a actuar rápido para que regrese a casa.
-
-En lugar de usar carteles tradicionales, nosotros creamos anuncios pagados en Facebook, Instagram y WhatsApp para llegar a miles de personas en la zona exacta del extravío.
-
-🚀 Plan de Búsqueda Acelerada:
-✅ Campaña activa por 7 días.
-✅ Publicidad segmentada en la zona.
-✅ Difusión masiva.
-
-💰 Costo: $1,500 MXN
-Mas info: 👉 https://sos.ubicanid.com`;
-
-        const defaultContacts = ["+526561638112", "+526561951348", "+526146022160"];
-
-        // Inicializar datos al cargar
-        window.onload = () => {
-            const savedMsg = localStorage.getItem('ubican_msg');
-            if(savedMsg) document.getElementById('messageText').value = savedMsg;
-            renderContacts();
-        };
-
-        // Guardar mensaje automáticamente
-        document.getElementById('messageText').addEventListener('input', (e) => {
-            localStorage.setItem('ubican_msg', e.target.value);
-        });
-
-        function showToast(msg) {
-            const t = document.getElementById('toast');
-            t.textContent = msg;
-            t.classList.add('show');
-            setTimeout(() => t.classList.remove('show'), 3000);
-        }
-
-        function renderContacts() {
-            const list = document.getElementById('contactsList');
-            list.innerHTML = '';
-            contacts.forEach((c, i) => {
-                const div = document.createElement('div');
-                div.className = 'contact-item flex items-center justify-between p-4 rounded-xl bg-white/5 border border-white/10';
-                div.innerHTML = `
-                    <span class="text-gray-200 font-mono">${c}</span>
-                    <button onclick="removeContact(${i})" class="text-red-400 hover:text-red-300 p-1">✕</button>
-                `;
-                list.appendChild(div);
-            });
-            document.getElementById('contactCount').textContent = contacts.length;
-            localStorage.setItem('ubican_contacts', JSON.stringify(contacts));
-        }
-
-        function addContact() {
-            const input = document.getElementById('newContact');
-            let val = input.value.trim().replace(/\s+/g, '');
-            if (!val.startsWith('+')) {
-                showToast('⚠️ Incluye el código de país (ej. +52)');
-                return;
-            }
-            if (contacts.includes(val)) {
-                showToast('⚠️ El número ya existe');
-                return;
-            }
-            contacts.push(val);
-            input.value = '';
-            renderContacts();
-        }
-
-        function removeContact(i) {
-            contacts.splice(i, 1);
-            renderContacts();
-        }
-
-        function clearAllContacts() {
-            if(confirm('¿Borrar toda la lista?')) {
-                contacts = [];
-                renderContacts();
-            }
-        }
-
-        function loadDefaultContacts() {
-            contacts = [...new Set([...contacts, ...defaultContacts])];
-            renderContacts();
-            showToast('✅ Contactos cargados');
-        }
-
-        function loadDefaultMessage() {
-            document.getElementById('messageText').value = defaultMessage;
-            localStorage.setItem('ubican_msg', defaultMessage);
-            showToast('✅ Plantilla cargada');
-        }
-
-        function clearMessage() {
-            document.getElementById('messageText').value = '';
-            localStorage.removeItem('ubican_msg');
-        }
-
-        async function startSending() {
-            const msg = document.getElementById('messageText').value.trim();
-            if (contacts.length === 0 || !msg) {
-                showToast('⚠️ Falta mensaje o contactos');
-                return;
-            }
-
-            currentIndex = 0;
-            document.getElementById('progressContainer').classList.remove('hidden');
-            sendLoop(msg);
-        }
-
-        function sendLoop(msg) {
-            if (currentIndex >= contacts.length) {
-                showToast('✅ ¡Proceso finalizado!');
-                return;
-            }
-
-            const phone = contacts[currentIndex].replace(/\D/g, '');
-            const url = `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
+        function startBulkSend() {
+            const rawContacts = document.getElementById('contactList').value.split('\n');
+            const message = document.getElementById('messageArea').value;
+            const btn = document.getElementById('btnMain');
             
-            const win = window.open(url, '_blank');
-            
-            if(!win) {
-                alert('⚠️ El navegador bloqueó la ventana emergente. Por favor, permite los pop-ups para este sitio.');
+            if (!message || rawContacts.length === 0) {
+                alert("Llena los números y el mensaje.");
                 return;
             }
 
-            currentIndex++;
-            updateProgress();
+            const contacts = rawContacts.map(c => c.replace(/\D/g, '')).filter(c => c.length > 0);
+            
+            btn.disabled = true;
+            btn.innerText = "Abriendo pestañas...";
 
-            // Intervalo de 4 segundos para evitar bloqueos
-            setTimeout(() => sendLoop(msg), 4000);
+            let i = 0;
+            const interval = setInterval(() => {
+                if (i >= contacts.length) {
+                    clearInterval(interval);
+                    btn.disabled = false;
+                    btn.innerText = "🚀 Iniciar Envío Masivo";
+                    document.getElementById('status').innerText = "¡Listo! Presiona Enter en cada pestaña.";
+                    return;
+                }
+
+                const phone = contacts[i];
+                // USAMOS EL LINK DIRECTO DE ENVÍO PARA WHATSAPP WEB
+                const url = `https://web.whatsapp.com/send?phone=${phone}&text=${encodeURIComponent(message)}`;
+                
+                window.open(url, '_blank');
+                
+                i++;
+                document.getElementById('status').innerText = `Abriendo chat ${i} de ${contacts.length}...`;
+            }, 3000); // 3 segundos entre pestañas para no colapsar el navegador
         }
-
-        function updateProgress() {
-            const p = (currentIndex / contacts.length) * 100;
-            document.getElementById('progressFill').style.width = p + '%';
-            document.getElementById('progressText').textContent = `Enviando: ${currentIndex} de ${contacts.length}`;
-        }
-
-        document.getElementById('newContact').addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') addContact();
-        });
     </script>
 </body>
 </html>
